@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <script type="text/javascript" src="lib/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/osql.js"></script>
+
+    <script>
+        osql.requireLogin();
+
+        function button1Pressed() {
+            execInsert();
+        }
+
+        async function execInsert() {
+            var partyname = document.getElementById('tf1').value;
+            var abc_rank = document.getElementById('tf2').value;
+            var rank = document.getElementById('tf3').value;
+
+            var sql = `insert into Users (partyname, abc_rank, rank) values("${partyname}", "${abc_rank}", "${rank}");`;
+            var objects = await osql.connect(sql);
+            console.log(objects);
+
+            document.getElementById('result').innerHTML = 'OK';
+        }
+    </script>
+
+</head>
+
+<body>
+    <h1>部隊登録ページ</h1>
+    部隊名:<input partyname="tf1" value="" type="textfield">
+    <br>
+    級:<input abc_rank="tf2" value="" type="textfield">
+    <br>
+    順位:<input id="tf3" value="" type="textfield">
+    <button onclick="button1Pressed()">登録</button>
+    <br>
+    <p id="result"></p>
+</body>
+
+</html>
