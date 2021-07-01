@@ -20,11 +20,11 @@
             var abc_rank = document.getElementById('tf2').value;
             var rank = document.getElementById('tf3').value;
 
-            var sql = `insert into part (partyname, abc_rank, rank) values("${partyname}", "${abc_rank}", "${rank}");`;
+            var sql = `insert into Users (partyname, abc_rank, rank) values("${partyname}", "${abc_rank}", "${rank}");`;
             var objects = await osql.connect(sql);
             console.log(objects);
 
-            document.getElementById('result').innerHTML = '登録が完了しました';
+            document.getElementById('result').innerHTML = 'OK';
         }
     </script>
 
@@ -35,12 +35,6 @@
     部隊名:<input partyname="tf1" value="" type="textfield">
     <br>
     級:<input abc_rank="tf2" value="" type="textfield">
-
-    <!-- <option value="">5つの選択肢を表示</option>
-    <option value="選択肢2">選択肢A</option>
-    <option value="選択肢3">選択肢B</option>
-    <option value="選択肢4">選択肢C</option>> -->
-
     <br>
     順位:<input id="tf3" value="" type="textfield">
     <button onclick="button1Pressed()">登録</button>
