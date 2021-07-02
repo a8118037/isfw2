@@ -42,7 +42,7 @@
             var number_rank = document.getElementById('tf3').value;
 
 
-            var sql = `update party set party_name="${party_name}",alphabet_rank="${alphabet_rank}", number_rank="${number_rank}" where id="${party_id}";`;
+            var sql = `update party set party_name="${party_name}", alphabet_rank="${alphabet_rank}", number_rank="${number_rank}" where party_id="${party_id}";`;
             var objects = await osql.connect(sql);
 
             document.getElementById('result').innerHTML = '変更しました';
