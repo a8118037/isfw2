@@ -8,15 +8,19 @@
     <script type="text/javascript" src="lib/jquery.min.js"></script>
     <script type="text/javascript" src="lib/osql.js"></script>
 
-
     <script>
 
         $(document).ready(function () {
-            execSelect();
+            execSelectA();
         });
 
-        async function execSelect() {
-            var sql = 'select * from party';
+
+        $(document).ready(function () {
+            execSelectB();
+        });
+
+        async function execSelectA() {
+            var sql = 'select party_id,party_name,alphabet_rank,number_rank from party where alphabet_rank="A" order by number_rank asc';
             var objects = await osql.connect(sql);
             console.log(objects);
             var html = '';
@@ -24,7 +28,7 @@
             for (var i = 0; i < objects.length; i++) {
                 html = html + '<tr>';
                 var object = objects[i];
-                html = html + '<td>' + object.party_id + '</td>';
+                // html = html + '<td>' + object.party_id + '</td>';
                 html = html + '<td>' + object.party_name + '</td>';
                 html = html + '<td>' + object.alphabet_rank + '</td>';
                 html = html + '<td>' + object.number_rank + '</td>';
@@ -34,14 +38,37 @@
             html = html + '</table>';
             document.getElementById('result').innerHTML = html;
         }
-
+        async function execSelectB() {
+            var sql = 'select party_id,party_name,alphabet_rank,number_rank from party where alphabet_rank="B" order by number_rank asc';
+            var objects = await osql.connect(sql);
+            console.log(objects);
+            var html = '';
+            html = html + '<table border="1">';
+            for (var i = 0; i < objects.length; i++) {
+                html = html + '<tr>';
+                var object = objects[i];
+                // html = html + '<td>' + object.party_id + '</td>';
+                html = html + '<td>' + object.party_name + '</td>';
+                html = html + '<td>' + object.alphabet_rank + '</td>';
+                html = html + '<td>' + object.number_rank + '</td>';
+                html = html + '<td>' + '<a href="party_update.html?party_id=' + object.party_id + '">変更</a>' + '</td>';
+                html = html + '</tr>';
+            }
+            html = html + '</table>';
+            document.getElementById('result2').innerHTML = html;
+        }
     </script>
 
 </head>
 
 <body>
-    <h1>部隊一覧</h1>
+    <h1>部隊編集画面</h1>
+    <h2>A級部隊</h2>
     <p id="result"></p>
+    <h2>B級部隊</h2>
+    <p id="result2"></p>
+</body>
+
 </body>
 
 </html>
