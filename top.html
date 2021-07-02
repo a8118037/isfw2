@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <script type="text/javascript" src="lib/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/osql.js"></script>
+
+    <title>ワールドトリガー部隊データ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/fixmenu_pagetop.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $('a[href^="#"]').click(function () {
+                var speed = 800;
+                var href = $(this).attr("href");
+                var target = $(href == "#" || href == "" ? 'html' : href);
+                var position = target.offset().top;
+                $('body,html').animate({ scrollTop: position }, speed, 'swing');
+                return false;
+            });
+        });
+    </script>
+</head>
+
+<body>
+
+    <header>
+        <h1 id="logo"><a href="index.html"><img src="images/logo.png" alt="List of members"></a></h1>
+        <nav id="menubar">
+            <ul>
+                <li><a href="party_new.html">部隊登録</a></li>
+                <li><a href="party_edit.html">部隊編集</a></li>
+                <li><a href="conbatant_new.html">隊員登録</a></li>
+                <li><a href="conbatant_edit.html">隊員情報編集</a></li>
+            </ul>
+        </nav>
+    </header>
