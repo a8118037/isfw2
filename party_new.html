@@ -23,7 +23,7 @@
             var sql = `insert into party (party_name, alphabet_rank, number_rank) values("${party_name}", "${alphabet_rank}", "${number_rank}");`;
             var objects = await osql.connect(sql);
             console.log(objects);
-            alert(sql)
+            // alert(sql)
             document.getElementById('result').innerHTML = '登録が完了しました';
         }
     </script>
