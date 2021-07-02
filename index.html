@@ -9,47 +9,72 @@
     <script type="text/javascript" src="lib/osql.js"></script>
 
     <script>
-        osql.requireLogin();
 
-        async function buttonPressed() {
-            var userid = document.getElementById('tf1').value;
-            var password = document.getElementById('tf2').value;
+        $(document).ready(function () {
+            execSelectA();
+        });
 
-            var sql = `select * from Users where id="${userid}";`;
+        $(document).ready(function () {
+            execSelectB();
+        });
+
+        async function execSelectA() {
+            var sql = 'select party_id,party_name,alphabet_rank,number_rank from party where alphabet_rank="A" order by number_rank asc';
             var objects = await osql.connect(sql);
-            if (objects.length <= 0) {
-                document.getElementById('result').innerHTML = 'ログイン失敗：ユーザが見つかりません';
-                return;
-            }
-            if (objects[0].password != password) {
-                document.getElementById('result').innerHTML = 'ログイン失敗：パスワードが違います';
-                return;
-            }
+            console.log(objects);
+            var html = '';
+            html = html + '<table border="1">';
+            for (var i = 0; i < objects.length; i++) {
+                // html = html + '<li>';
+                var object = objects[i];
+                // html = html + '<td>' + object.party_id + '</td>';
+                html = html + '<ol>' + object.alphabet_rank + "級" + object.number_rank + "位　" + object.party_name + "隊" + '</ol>';
+                html = html + '<li>' + object.alphabet_rank + '</li>';
 
-            sessionStorage.setItem('userid', objects[0].id);
-            sessionStorage.setItem('username', objects[0].name);
+                //ここにメンバーのDBをfor文で作る
 
-            location.href = 'usertop.html';
+
+                html = html + '</li>';
+            }
+            html = html + '</table>';
+            document.getElementById('result').innerHTML = html;
         }
+
+
+        async function execSelectB() {
+            var sql = 'select party_id,party_name,alphabet_rank,number_rank from party where alphabet_rank="B" order by number_rank asc';
+            var objects = await osql.connect(sql);
+            console.log(objects);
+            var html = '';
+            html = html + '<table border="1">';
+            for (var i = 0; i < objects.length; i++) {
+                // html = html + '<li>';
+                var object = objects[i];
+                // html = html + '<td>' + object.party_id + '</td>';
+                html = html + '<ol>' + object.alphabet_rank + "級" + object.number_rank + "位　" + object.party_name + "隊" + '</ol>';
+                html = html + '<li>' + object.alphabet_rank + '</li>';
+                //ここにメンバーのDBをfor文で作る
+
+
+                html = html + '</li>';
+            }
+            html = html + '</table>';
+            document.getElementById('result2').innerHTML = html;
+        }
+
+
     </script>
 
 </head>
 
 <body>
-    <h1>ユーザ管理　アプリケーション　v3</h1>
-    <div>
-        <h2>ログイン</h2>
-        userid:<input id="tf1" value="" type="textfield">
-        <br>
-        password:<input id="tf2" value="" type="password">
-        <br>
-        <button onclick="buttonPressed()">ログイン</button>
-        <p id="result"></p>
-    </div>
-    <hr>
-    <p><a href="register.html">新規登録</a></p>
-    <hr>
-    <p style="text-align: right"><a href="admintop.html">管理者ページ</a></p>
+    <h1>隊員一覧</h1>
+    <h2>A級所属</h2>
+    <p id="result"></p>
+    <h2>B級所属</h2>
+    <p id="result2"></p>
+</body>
+
 </body>
 
 </html>
