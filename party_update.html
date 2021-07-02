@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <script type="text/javascript" src="lib/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/osql.js"></script>
+
+    <script>
+        // osql.requireLogin();
+
+        $().ready(function () {
+            execSelect();
+        });
+
+        async function execSelect() {
+            var party_id = osql.getParam('party_id');
+            var sql = `select * from party where party_id="${party_id}";`;
+            var objects = await osql.connect(sql);
+            if (objects.length <= 0) {
+                document.getElementById('result').innerHTML = 'not found';
+                return;
+            }
+            var party = objects[0];
+            document.getElementById('tf4').value = party.party_id;
+            document.getElementById('tf1').value = party.party_name;
+            document.getElementById('tf2').value = party.alphabet_rank;
+            document.getElementById('tf3').value = party.number_rank;
+
+        }
+
+        function button1Pressed() {
+            execUpdate();
+        }
+
+        async function execUpdate() {
+            var party_id = document.getElementById('tf4').value;
+            var party_name = document.getElementById('tf1').value;
+            var alphabet_rank = document.getElementById('tf2').value;
+            var number_rank = document.getElementById('tf3').value;
+
+
+            var sql = `update party set party_name="${party_name}",alphabet_rank="${alphabet_rank}", number_rank="${number_rank}" where id="${party_id}";`;
+            var objects = await osql.connect(sql);
+
+            document.getElementById('result').innerHTML = '変更しました';
+        }
+    </script>
+
+</head>
+
+
+<body>
+    <h1>部隊登録変更</h1>
+    部隊ID:<input id="tf4" value="" type="textfield" disabled>
+    部隊名:<input id="tf1" value="" type="textfield">
+    <br>
+    級:
+    <select id="tf2">
+        <option value="A">A級</option>
+        <option value="B">B級</option>
+        <option value="C">C級</option>
+    </select>
+
+    <br>
+    順位:<input id="tf3" value="" type="textfield">
+    <button onclick="button1Pressed()">変更</button>
+    <br>
+    <p id="result"></p>
+</body>
+
+</html>
