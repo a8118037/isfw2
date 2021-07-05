@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <script type="text/javascript" src="../lib/jquery.min.js"></script>
+    <script type="text/javascript" src="../lib/osql.js"></script>
+
+    <script>
+        osql.requireLogin();
+    </script>
+
+</head>
+
+<body>
+    <h1>戦闘員登録ページ</h1>
+    名前:<input id="name" value="" type="textfield">
+    <br>
+
+    年齢:<input id="age" type="number" value="15">
+    <br>
+
+    隊長:<input id="is_captain" value="" type="checkbox">
+    <br>
+
+    所属部隊:
+    <select id="party">
+        <option value="null">所属なし</option>
+    </select>
+    <br>
+
+    画像URL:<input id="image" value="" type="textfield">
+    <br>
+    <img id="imageUrlChecker" src="../images/no_image.png" width="auto" height="100">
+    <br>
+
+    ポジション:
+    <select id="position">
+        <option value="アタッカー">アタッカー</option>
+        <option value="ガンナー">ガンナー</option>
+        <option value="シューター">シューター</option>
+        <option value="スナイパー">スナイパー</option>
+        <option value="トラッパー">トラッパー</option>
+        <option value="スポッター">スポッター</option>
+        <option value="オールラウンダー">オールラウンダー</option>
+    </select>
+    <br>
+
+    ステータス
+    <div id="status_form">
+        トリオン:<input id="trion"　type="number" value="0">
+        攻撃:<input id="attack" type="number" value="0">
+        <br>
+        防御・支援:<input id="defence_support" type="number" value="0">
+        機動:<input id="mobility" type="number" value="0">
+        <br>
+        技術:<input id="technique" type="number" value="0">
+        射程:<input id="range" type="number" value="0">
+        <br>
+        指揮:<input id="order" type="number" value="0">
+        特殊戦術:<input id="special_tactics" type="number" value="0">
+    </div>
+
+    メイントリガー
+    <div id="main_trriger_form">
+        <select id="main_trriger_1">
+            <option value="null" selected>なし</option>
+        </select>
+        <select id="main_trriger_2">
+            <option value="null" selected>なし</option>
+        </select>
+        <select id="main_trriger_3">
+            <option value="null" selected>なし</option>
+        </select>
+        <select id="main_trriger_4">
+            <option value="null" selected>なし</option>
+        </select>
+        <select id="main_trriger_5">
+            <option value="null" selected>なし</option>
+        </select>
+        <select id="main_trriger_6">
+            <option value="null" selected>なし</option>
+        </select>
+        <select id="main_trriger_7">
+            <option value="null" selected>なし</option>
+        </select>
+    </div>
+    サブトリガー
+    <div id="sub_trriger_form">
+        <select id="sub_trriger_1">
+            <option value="null" selected>なし</option>
+        </select>
+        <select id="sub_trriger_2">
+            <option value="null" selected>なし</option>
+        </select>
+        <select id="sub_trriger_3">
+            <option value="null" selected>なし</option>
+        </select>
+        <select id="sub_trriger_4">
+            <option value="null" selected>なし</option>
+        </select>
+        <select id="sub_trriger_5">
+            <option value="null" selected>なし</option>
+        </select>
+        <select id="sub_trriger_6">
+            <option value="null" selected>なし</option>
+        </select>
+        <select id="sub_trriger_7">
+            <option value="null" selected>なし</option>
+        </select>
+    </div>
+
+
+    <br>
+    <button onclick="button1Pressed()">登録</button>
+    <br>
+    <p id="result"></p>
+
+    <script>
+        $(document).ready(function () {
+            make_party_form();
+            make_trriger_form();
+        });
+
+        async function make_party_form() {
+            var sql = 'select party_id, party_name from party';
+            var objects = await osql.connect(sql);
+            for(var i=0;i<objects.length;i++){
+                let option = document.createElement("option");
+                option.value = objects[i].party_name;
+                option.text = objects[i].party_name + '隊';
+                document.getElementById("party").appendChild(option);
+            }
+            
+        }
+
+        async function make_trriger_form() {
+            var sql = 'select trriger_name from trriger';
+            var objects = await osql.connect(sql);
+            // メイントリガーフォーム作成
+            const main_trriger_forms = document.getElementById("main_trriger_form").children;
+            for(var i=0;i<main_trriger_forms.length;i++){
+                for(var j=0;j<objects.length;j++){
+                    let option = document.createElement("option");
+                    option.value = objects[j].trriger_name;
+                    option.text = objects[j].trriger_name;
+                    main_trriger_forms[i].appendChild(option);
+                }
+            }
+            // サブトリガーフォーム作成
+            const sub_trriger_forms = document.getElementById("sub_trriger_form").children;
+            for(var i=0;i<sub_trriger_forms.length;i++){
+                for(var j=0;j<objects.length;j++){
+                    let option = document.createElement("option");
+                    option.value = objects[j].trriger_name;
+                    option.text = objects[j].trriger_name;
+                    sub_trriger_forms[i].appendChild(option);
+                }
+            }
+        }
+
+        // フォームに入力された値が有効かどうかを判定する関数
+        function is_valid_form() {
+            let is_valid = true;
+            let alert_message = '';
+            if(!document.getElementById('name').value) { 
+                alert_message += '名前を入力してください\n';
+                is_valid = false;
+            }
+            if(!is_valid) {
+                alert(alert_message);
+            }
+            return is_valid
+        }
+
+        async function insert_into_member() {
+            const name = '"' + document.getElementById('name').value + '"';
+            const age = document.getElementById('age').value;
+            const is_captain = document.getElementById('is_captain').checked
+            let party = document.getElementById('party').value;
+            if (party=='null') {
+                party = 'NULL';
+            } else {
+                party = '"' + party + '"';
+            }
+            let image_url = document.getElementById('image').value;
+            if (image_url) { 
+                image_url = '"' + image_url + '"';
+            } else {
+                image_url = 'NULL';
+            }
+            const position = '"' + document.getElementById('position').value + '"';
+
+            const sql_for_member = 
+                `insert into member 
+                (member_name, party_name, age, is_captain, position, image_url)
+                values
+                (${name}, ${party}, ${age}, ${is_captain}, ${position}, ${image_url});`;
+            
+            var objects = await osql.connect(sql_for_member);
+        }
+
+        async function insert_into_combatant() {
+            const name = '"' + document.getElementById('name').value + '"';
+            const trion = document.getElementById('trion').value;
+            const attack = document.getElementById('attack').value;
+            const defence_support = document.getElementById('defence_support').value;
+            const mobility = document.getElementById('mobility').value;
+            const technique = document.getElementById('technique').value;
+            const range = document.getElementById('range').value;
+            const order = document.getElementById('order').value;
+            const special_tactics = document.getElementById('special_tactics').value;
+            
+            const sql_for_combatant = 
+            `insert into combatant
+            (member_name, trion_status, attack_status, defence_support_status, mobility_status, 
+            technique_status, range_status, order_status, special_tactics_status)
+            values
+            (${name}, ${trion}, ${attack}, ${defence_support}, ${mobility}, 
+            ${technique}, ${range}, ${order}, ${special_tactics});`;
+
+            var objects = await osql.connect(sql_for_combatant);
+            console.log(objects);
+        }
+
+        async function insert_into_trriger_set() {
+            const name = document.getElementById('name').value;
+            // メイントリガーの処理
+            const main_trriger_forms = document.getElementById("main_trriger_form").children;
+            for(var i=0;i<main_trriger_forms.length;i++){
+                var trriger = main_trriger_forms[i].value;
+                if(trriger != 'null') {
+                    var sql_for_trriger_set = 
+                        `insert into trriger_set (member_name, trriger_name, is_main)
+                        values ("${name}", "${trriger}", TRUE);`;
+                    var objects = await osql.connect(sql_for_trriger_set);
+                    console.log(objects);
+                }
+            }
+            // サブトリガーの処理
+            const sub_trriger_forms = document.getElementById("sub_trriger_form").children;
+            for(var i=0;i<main_trriger_forms.length;i++){
+                var trriger = main_trriger_forms[i].value;
+                if(trriger != 'null') {
+                    var sql_for_trriger_set = 
+                        `insert into trriger_set (member_name, trriger_name, is_main)
+                        values ("${name}", "${trriger}", FALSE);`;
+                    var objects = await osql.connect(sql_for_trriger_set);
+                    console.log(objects);
+                }
+            }
+        }
+
+        function button1Pressed() {
+            if(!is_valid_form()) {
+                return 
+            }
+            insert_into_member();
+            insert_into_combatant();
+            insert_into_trriger_set();
+            document.getElementById('result').innerHTML = '登録が完了しました';
+
+        }
+
+        var member_image_url_form = document.getElementById('image');
+        member_image_url_form.addEventListener('input', function(){
+            var image_url_checker = document.getElementById("imageUrlChecker");
+            image_url_checker.src = this.value;
+        })
+    </script>
+</body>
+
+</html>

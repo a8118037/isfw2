@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <script type="text/javascript" src="../lib/jquery.min.js"></script>
+    <script type="text/javascript" src="../lib/osql.js"></script>
+
+    <script>
+        osql.requireLogin();
+    </script>
+
+</head>
+
+<body>
+    <h1>戦闘員登録ページ</h1>
+    名前:<input id="name" value="" type="textfield">
+    <br>
+
+    年齢:<input id="age" type="number" value="15">
+    <br>
+
+    隊長:<input id="is_captain" value="" type="checkbox">
+    <br>
+
+    所属部隊:
+    <select id="party">
+        <option value="null">所属なし</option>
+    </select>
+    <br>
+
+    画像URL:<input id="image" value="" type="textfield">
+    <br>
+    <img id="imageUrlChecker" src="../images/no_image.png" width="auto" height="100">
+    <br>
+
+    ステータス
+    <div id="status_form">
+        トリオン:<input id="trion"　type="number" value="0">
+        機器操作:<input id="equipment_operation" type="number" value="0">
+        <br>
+        情報分析:<input id="analysis" type="number" value="0">
+        並列処理:<input id="parallel_thinking" type="number" value="0">
+        <br>
+        戦術:<input id="tactics" type="number" value="0">
+        指揮:<input id="order" type="number" value="0">
+    </div>
+
+    <br>
+    <button onclick="button1Pressed()">登録</button>
+    <br>
+    <p id="result"></p>
+
+    <script>
+        $(document).ready(function () {
+            make_party_form();
+        });
+
+        async function make_party_form() {
+            var sql = 'select party_id, party_name from party';
+            var objects = await osql.connect(sql);
+            for(var i=0;i<objects.length;i++){
+                let option = document.createElement("option");
+                option.value = objects[i].party_name;
+                option.text = objects[i].party_name + '隊';
+                document.getElementById("party").appendChild(option);
+            }
+            
+        }
+
+        // フォームに入力された値が有効かどうかを判定する関数
+        function is_valid_form() {
+            let is_valid = true;
+            let alert_message = '';
+            if(!document.getElementById('name').value) { 
+                alert_message += '名前を入力してください\n';
+                is_valid = false;
+            }
+            if(!is_valid) {
+                alert(alert_message);
+            }
+            return is_valid
+        }
+
+        async function insert_into_member() {
+            const name = '"' + document.getElementById('name').value + '"';
+            const age = document.getElementById('age').value;
+            const is_captain = document.getElementById('is_captain').checked
+            let party = document.getElementById('party').value;
+            if (party=='null') {
+                party = 'NULL';
+            } else {
+                party = '"' + party + '"';
+            }
+            let image_url = document.getElementById('image').value;
+            if (image_url) { 
+                image_url = '"' + image_url + '"';
+            } else {
+                image_url = 'NULL';
+            }
+
+            const sql_for_member = 
+                `insert into member 
+                (member_name, party_name, age, is_captain, position, image_url)
+                values
+                (${name}, ${party}, ${age}, ${is_captain}, "operator", ${image_url});`;
+            
+            var objects = await osql.connect(sql_for_member);
+        }
+
+        async function insert_into_operator() {
+            const name = '"' + document.getElementById('name').value + '"';
+            const trion = document.getElementById('trion').value;
+            const equipment_operation = document.getElementById('equipment_operation').value;
+            const analysis = document.getElementById('analysis').value;
+            const parallel_thinking = document.getElementById('parallel_thinking').value;
+            const tactics = document.getElementById('tactics').value;
+            const order = document.getElementById('order').value;
+            
+            const sql_for_operator = 
+            `insert into operator
+            (member_name, trion_status, equipment_operation_status, analysis_status,
+            parallel_thinking_status, tactics_status, order_status)
+            values
+            (${name}, ${trion}, ${equipment_operation}, ${analysis},
+            ${parallel_thinking}, ${tactics}, ${order});`;
+
+            var objects = await osql.connect(sql_for_operator);
+            console.log(objects);
+        }
+
+        function button1Pressed() {
+            if(!is_valid_form()) {
+                return 
+            }
+            insert_into_member();
+            insert_into_operator();
+            document.getElementById('result').innerHTML = '登録が完了しました';
+
+        }
+
+        var member_image_url_form = document.getElementById('image');
+        member_image_url_form.addEventListener('input', function(){
+            var image_url_checker = document.getElementById("imageUrlChecker");
+            image_url_checker.src = this.value;
+        })
+    </script>
+</body>
+
+</html>
