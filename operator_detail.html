@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <script type="text/javascript" src="lib/jquery.min.js"></script>
+    <script type="text/javascript" src="lib/osql.js"></script>
+
+    <script>
+        // osql.requireLogin();
+
+        $().ready(function () {
+            execSelect();
+        });
+
+        async function execSelect() {
+            var member_name = osql.getParam('member_name');
+            var sql = `select * from member where member_name="${member_name}";`;
+            var objects = await osql.connect(sql);
+            if (objects.length <= 0) {
+                document.getElementById('result').innerHTML = 'not found';
+                return;
+            }
+            var member = objects[0];
+            document.getElementById('tf4').value = member.member_name;
+            // document.getElementById('tf1').value = party.party_name;
+            // document.getElementById('tf2').value = party.alphabet_rank;
+            // document.getElementById('tf3').value = party.number_rank;
+
+        }
+
+
+
+        // document.getElementById('result').innerHTML = '変更しました';
+
+    </script>
+
+</head>
+
+
+<body>
+    <h1>オペレーター詳細ページ</h1>
+    名前:<input id="tf4" value="" type="textfield" disabled>
+    <br>
+    部隊名:<input id="tf1" value="" type="textfield">
+    <br>
+    級:
+    <select id="tf2">
+        <option value="A">A級</option>
+        <option value="B">B級</option>
+        <option value="C">C級</option>
+    </select>
+
+    <br>
+    順位:<input id="tf3" value="" type="textfield">
+    <button onclick="button1Pressed()">変更</button>
+    <br>
+    <p id="result"></p>
+</body>
+
+</html>
