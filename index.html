@@ -19,17 +19,29 @@
         });
 
         async function execSelectA() {
-            var sql = 'select party_id,party_name,alphabet_rank,number_rank from party where alphabet_rank="A" order by number_rank asc';
+            var sql = 'select party_id,party_name,alphabet_rank,number_rank from party where alphabet_rank="B" order by number_rank asc';
             var objects = await osql.connect(sql);
             console.log(objects);
             var html = '';
             html = html + '<table border="1">';
+
+            var member_sql = 'select * from party inner join member where party.party_name = member.party_name and alphabet_rank = "B" order by number_rank asc';
+            var member_objects = await osql.connect(member_sql);
+            console.log(member_objects);
+
             for (var i = 0; i < objects.length; i++) {
                 // html = html + '<li>';
                 var object = objects[i];
                 // html = html + '<td>' + object.party_id + '</td>';
                 html = html + '<ol>' + object.alphabet_rank + "級" + object.number_rank + "位　" + object.party_name + "隊" + '</ol>';
-                html = html + '<li>' + object.alphabet_rank + '</li>';
+
+                for (var t = 0; t < member_objects.length; t++) {
+                    var member_object = member_objects[t];
+                    html = html + '<li>' + member_object.member_name + '</li>';
+
+                }
+
+
 
                 //ここにメンバーのDBをfor文で作る
 
