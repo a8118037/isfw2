@@ -33,7 +33,7 @@
 
     画像URL:<input id="image" value="" type="textfield">
     <br>
-    <img id="imageUrlChecker" src="../images/no_image.png" width="auto" height="100">
+    <img id="imageUrlChecker" src="https://deliver.commons.nicovideo.jp/thumbnail/nc209714" width="auto" height="100">
     <br>
 
     ポジション:
@@ -189,7 +189,7 @@
             if (image_url) { 
                 image_url = '"' + image_url + '"';
             } else {
-                image_url = 'NULL';
+                image_url = '"https://deliver.commons.nicovideo.jp/thumbnail/nc209714"';
             }
             const position = '"' + document.getElementById('position').value + '"';
 
