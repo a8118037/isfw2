@@ -33,7 +33,7 @@
                 // html = html + '<td>' + object.party_id + '</td>';
                 html = html + '<ol>' + object.alphabet_rank + "級" + object.number_rank + "位　" + object.party_name + "隊" + '</ol>';
 
-                var member_sql = 'select * from party inner join member where party.party_name = member.party_name and alphabet_rank = "A" and number_rank= "' + object.number_rank + '%"  order by number_rank asc';
+                var member_sql = 'select * from party inner join member where party.party_name = member.party_name and alphabet_rank = "A" and number_rank= "' + object.number_rank + '%"  order by is_captain desc';
                 var member_objects = await osql.connect(member_sql);
                 console.log(member_objects);
 
@@ -66,7 +66,7 @@
                 var object = objects[i];
                 // html = html + '<td>' + object.party_id + '</td>';
                 html = html + '<ol>' + object.alphabet_rank + "級" + object.number_rank + "位　" + object.party_name + "隊" + '</ol>';
-                var member_sql = 'select * from party inner join member where party.party_name = member.party_name and alphabet_rank = "B" and number_rank= "' + object.number_rank + '%"  order by number_rank asc';
+                var member_sql = 'select * from party inner join member where party.party_name = member.party_name and alphabet_rank = "B" and number_rank= "' + object.number_rank + '%" order by is_captain desc';
                 var member_objects = await osql.connect(member_sql);
                 console.log(member_objects);
 
