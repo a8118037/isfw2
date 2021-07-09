@@ -41,7 +41,16 @@
                     var member_object = member_objects[t];
                     html = html + '<li>' + '<a href="conbatant_detail.html?member_name=' + member_object.member_name + '"> ' + member_object.member_name + ' </a>' + '</li>';
                     // html = html + '<li>' + member_object.member_name + '</li>';
+                }
 
+                var ope_sql = 'select * from party inner join member where party.party_name = member.party_name and position= "オペレーター" and alphabet_rank = "A" and number_rank= "' + object.number_rank + '%" order by is_captain desc';
+                var ope_objects = await osql.connect(ope_sql);
+                console.log(ope_objects);
+
+                for (var s = 0; s < ope_objects.length; s++) {
+                    var ope_object = ope_objects[s];
+                    // html = html + '<li>' + ope_object.member_name + '</li>';
+                    html = html + '<li>' + '<a href="operator_detail.html?member_name=' + ope_object.member_name + '"> ' + ope_object.member_name + ' </a>' + '</li>';
                 }
 
 
@@ -62,11 +71,11 @@
             console.log(objects);
             var html = '';
             html = html + '<table border="1">';
+
             for (var i = 0; i < objects.length; i++) {
-                // html = html + '<li>';
                 var object = objects[i];
-                // html = html + '<td>' + object.party_id + '</td>';
                 html = html + '<ol>' + object.alphabet_rank + "級" + object.number_rank + "位　" + object.party_name + "隊" + '</ol>';
+
                 var member_sql = 'select * from party inner join member where party.party_name = member.party_name and not position= "オペレーター" and alphabet_rank = "B" and number_rank= "' + object.number_rank + '%" order by is_captain desc';
                 var member_objects = await osql.connect(member_sql);
                 console.log(member_objects);
@@ -74,8 +83,21 @@
                 for (var t = 0; t < member_objects.length; t++) {
                     var member_object = member_objects[t];
                     html = html + '<li>' + '<a href="conbatant_detail.html?member_name=' + member_object.member_name + '"> ' + member_object.member_name + ' </a>' + '</li>';
-
                 }
+
+                var ope_sql = 'select * from party inner join member where party.party_name = member.party_name and position= "オペレーター" and alphabet_rank = "B" and number_rank= "' + object.number_rank + '%" order by is_captain desc';
+                var ope_objects = await osql.connect(ope_sql);
+                console.log(ope_objects);
+
+                for (var s = 0; s < ope_objects.length; s++) {
+                    var ope_object = ope_objects[s];
+                    // html = html + '<li>' + ope_object.member_name + '</li>';
+                    html = html + '<li>' + '<a href="operator_detail.html?member_name=' + ope_object.member_name + '"> ' + ope_object.member_name + ' </a>' + '</li>';
+                }
+
+
+
+
 
                 //ここにメンバーのDBをfor文で作る
 
