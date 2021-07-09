@@ -39,7 +39,8 @@
 
                 for (var t = 0; t < member_objects.length; t++) {
                     var member_object = member_objects[t];
-                    html = html + '<li>' + member_object.member_name + '</li>';
+                    html = html + '<li>' + '<a href="conbatant_detail.html?member_name=' + member_object.member_name + '"> ' + member_object.member_name + ' </a>' + '</li>';
+                    // html = html + '<li>' + member_object.member_name + '</li>';
 
                 }
 
@@ -72,7 +73,7 @@
 
                 for (var t = 0; t < member_objects.length; t++) {
                     var member_object = member_objects[t];
-                    html = html + '<li>' + member_object.member_name + '</li>';
+                    html = html + '<li>' + '<a href="conbatant_detail.html?member_name=' + member_object.member_name + '"> ' + member_object.member_name + ' </a>' + '</li>';
 
                 }
 
