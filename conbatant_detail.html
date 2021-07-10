@@ -8,68 +8,153 @@
     <script type="text/javascript" src="lib/jquery.min.js"></script>
     <script type="text/javascript" src="lib/osql.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+
     <script>
-        // osql.requireLogin();
 
         $().ready(function () {
             execSelect();
         });
 
         async function execSelect() {
-            var party_id = osql.getParam('party_id');
-            var sql = `select * from party where party_id="${party_id}";`;
+            var html = '';
+            var member_name = osql.getParam('member_name');
+            var sql = `select * from party inner join member where party.party_name = member.party_name and member_name="${member_name}";`;
             var objects = await osql.connect(sql);
+            console.log(objects);
             if (objects.length <= 0) {
                 document.getElementById('result').innerHTML = 'not found';
                 return;
             }
-            var party = objects[0];
-            document.getElementById('tf4').value = party.party_id;
-            document.getElementById('tf1').value = party.party_name;
-            document.getElementById('tf2').value = party.alphabet_rank;
-            document.getElementById('tf3').value = party.number_rank;
+            var object = objects[0];
 
+            html = html + '<ul>';
+            html = html + object.member_name;
+
+            html = html + '<li>' + '所属部隊:' + object.alphabet_rank + '級' + object.number_rank + '位' + object.party_name + '隊' + '</li>';
+            html = html + '<li>' + 'ポジション:' + object.position + '</li>';
+            html = html + '<li>' + '年齢:' + object.age + '</li>';
+
+            html = html + '</ul>'
+            document.getElementById('result').innerHTML = html;
         }
 
-        function button1Pressed() {
-            execUpdate();
-        }
+        $().ready(function () {
+            showMainTrriger();
+        });
 
-        async function execUpdate() {
-            var party_id = document.getElementById('tf4').value;
-            var party_name = document.getElementById('tf1').value;
-            var alphabet_rank = document.getElementById('tf2').value;
-            var number_rank = document.getElementById('tf3').value;
-
-
-            var sql = `update party set party_name="${party_name}", alphabet_rank="${alphabet_rank}", number_rank="${number_rank}" where party_id="${party_id}";`;
+        async function showMainTrriger() {
+            var html = '';
+            var member_name = osql.getParam('member_name');
+            var sql = `select * from trriger_set where member_name="${member_name}" and is_main ="1";`;
             var objects = await osql.connect(sql);
+            console.log(objects);
 
-            document.getElementById('result').innerHTML = '変更しました';
+            html = html + '<ul>';
+            // html = html + 'メイントリガー';
+            for (var i = 0; i < objects.length; i++) {
+                var object = objects[i];
+                html = html + '<li>' + object.trriger_name + '</li>';
+            }
+            html = html + '</ul>';
+            document.getElementById('result2').innerHTML = html;
         }
+
+        $().ready(function () {
+            showSubTrriger();
+        });
+
+        async function showSubTrriger() {
+            var html = '';
+            var member_name = osql.getParam('member_name');
+            var sql = `select * from trriger_set where member_name="${member_name}" and is_main ="0";`;
+            var objects = await osql.connect(sql);
+            console.log(objects);
+
+            html = html + '<ul>';
+            // html = html + 'メイントリガー';
+            for (var i = 0; i < objects.length; i++) {
+                var object = objects[i];
+                html = html + '<li>' + object.trriger_name + '</li>';
+            }
+            html = html + '</ul>';
+            document.getElementById('result3').innerHTML = html;
+        }
+
+        $().ready(function () {
+            drowGraph();
+        });
+
+        async function drowGraph() {
+
+            var member_name = osql.getParam('member_name');
+            var sql = `select * from combatant where member_name="${member_name}";`;
+            var objects = await osql.connect(sql);
+            console.log(objects);
+
+            var object = objects[0];
+
+            // オペレーターからもってくるやーつをここに書く
+            var ctx = document.getElementById("myRaderChart");
+            var myRadarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ["トリオン", "攻撃", "防御・援護", "機動", "技術", "射程", "指揮", "特殊戦術"],
+                    datasets: [{
+                        label: object.member_name,
+                        data: [object.trion_status, object.attack_status, object.defence_support_status, object.mobility_status, object.technique_status, object.range_status, object.order_status, object.special_tactics_status],
+                        backgroundColor: 'RGBA(225,95,150, 0.5)',
+                        borderColor: 'RGBA(225,95,150, 1)',
+                        borderWidth: 1,
+                        pointBackgroundColor: 'RGB(46,106,177)'
+
+                    }]
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: 'パラメーター'
+                    },
+                    scale: {
+                        ticks: {
+                            suggestedMin: 0,
+                            suggestedMax: 10,
+                            stepSize: 2,
+                            callback: function (value, index, values) {
+                                return value
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
     </script>
 
 </head>
 
 
 <body>
-    <h1>部隊登録変更</h1>
-    部隊ID:<input id="tf4" value="" type="textfield" disabled>
-    <br>
-    部隊名:<input id="tf1" value="" type="textfield">
-    <br>
-    級:
-    <select id="tf2">
-        <option value="A">A級</option>
-        <option value="B">B級</option>
-        <option value="C">C級</option>
-    </select>
+    <h1>戦闘員詳細ページ</h1>
+
+    <h3>基本情報</h3>
+    <p id="result"></p>
+
+    <h3>装備トリガー</h3>
+    <h4>メイン</h4>
+    <p id="result2"></p>
+    <h4>サブ</h4>
+    <p id="result3"></p>
+
+    <h3>能力レーダーチャート</h3>
+    <canvas id="myRaderChart"></canvas>
 
     <br>
-    順位:<input id="tf3" value="" type="textfield">
-    <button onclick="button1Pressed()">変更</button>
     <br>
-    <p id="result"></p>
+    <a href="combatant_edit.html">データを修正する</a>
+    <!-- <button onclick="button1Pressed()">データを修正する</button> -->
+    <br>
+
 </body>
 
 </html>
