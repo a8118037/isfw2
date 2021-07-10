@@ -16,24 +16,28 @@
         });
 
         async function execSelect() {
+            var html = '';
             var member_name = osql.getParam('member_name');
-            var sql = `select * from member where member_name="${member_name}";`;
+            var sql = `select * from party inner join member where party.party_name = member.party_name and member_name="${member_name}";`;
             var objects = await osql.connect(sql);
+            console.log(objects);
             if (objects.length <= 0) {
                 document.getElementById('result').innerHTML = 'not found';
                 return;
             }
-            var member = objects[0];
-            document.getElementById('tf4').value = member.member_name;
-            // document.getElementById('tf1').value = party.party_name;
-            // document.getElementById('tf2').value = party.alphabet_rank;
-            // document.getElementById('tf3').value = party.number_rank;
+            var object = objects[0];
 
+            html = html + '<ul>';
+            html = html + object.member_name;
+
+            html = html + '<li>' + '所属部隊:' + object.alphabet_rank + '級' + object.number_rank + '位' + object.party_name + '隊' + '</li>';
+            html = html + '<li>' + 'ポジション:' + object.position + '</li>';
+            html = html + '<li>' + '年齢:' + object.age + '</li>';
+
+            html = html + '</ul>'
+            document.getElementById('result').innerHTML = html;
         }
 
-
-
-        // document.getElementById('result').innerHTML = '変更しました';
 
     </script>
 
@@ -42,22 +46,13 @@
 
 <body>
     <h1>オペレーター詳細ページ</h1>
-    名前:<input id="tf4" value="" type="textfield" disabled>
-    <br>
-    部隊名:<input id="tf1" value="" type="textfield">
-    <br>
-    級:
-    <select id="tf2">
-        <option value="A">A級</option>
-        <option value="B">B級</option>
-        <option value="C">C級</option>
-    </select>
+    <p id="result"></p>
 
     <br>
-    順位:<input id="tf3" value="" type="textfield">
-    <button onclick="button1Pressed()">変更</button>
     <br>
-    <p id="result"></p>
+    <button onclick="button1Pressed()">データを修正する</button>
+    <br>
+
 </body>
 
 </html>
