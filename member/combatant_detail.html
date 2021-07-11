@@ -16,36 +16,27 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
 
     <script>
-
         $().ready(function () {
-            execSelect();
+            const memberName = osql.getParam('member_name');
+            document.getElementById("memberName").innerText = memberName;
+            showBasicInfo(memberName);
+
             // 編集ページヘのリンクを作成
-            document.getElementById("editPageLink").href = 'combatant_edit.html?member_name=' + osql.getParam('member_name');
+            document.getElementById("editPageLink").href = 'combatant_edit.html?member_name=' + memberName;
         });
 
-        async function execSelect() {
-            var html = '';
-            var member_name = osql.getParam('member_name');
-            var sql = `select * from party inner join member where party.party_name = member.party_name and member_name="${member_name}";`;
-            var objects = await osql.connect(sql);
-            console.log(objects);
-            if (objects.length <= 0) {
-                document.getElementById('result').innerHTML = 'not found';
-                return;
-            }
-            var object = objects[0];
+        async function showBasicInfo(member_name) {
+            const sql = `select * from party inner join member where party.party_name = member.party_name and member_name="${member_name}";`;
+            const objects = await osql.connect(sql);
+            const object = objects[0];
 
-            html = html + '<ul>';
-            html = html + object.member_name;
 
-            html = html + '<li>' + '所属部隊:' + object.alphabet_rank + '級' + object.number_rank + '位' + object.party_name + '隊' + '</li>';
-            html = html + '<li>' + 'ポジション:' + object.position + '</li>';
-            html = html + '<li>' + '年齢:' + object.age + '</li>';
-
-            html = html + '</ul>'
-            document.getElementById('result').innerHTML = html;
+            document.getElementById("partyRank").innerText = object.alphabet_rank + '級' + object.number_rank + '位';
+            document.getElementById("partyName").innerText = object["party.party_name"] + '隊';
+            document.getElementById("position").innerText = object.position;
+            document.getElementById("age").innerText = object.age + '歳';
         }
-
+        
         $().ready(function () {
             showMainTrriger();
         });
@@ -93,7 +84,6 @@
         });
 
         async function drowGraph() {
-
             var member_name = osql.getParam('member_name');
             var sql = `select * from combatant where member_name="${member_name}";`;
             var objects = await osql.connect(sql);
@@ -159,10 +149,27 @@
     </nav>
 
     <div class="uk-container">
-        <h1>戦闘員詳細ページ</h1>
+        <h2 id="memberName"></h2>
 
-        <h3>基本情報</h3>
-        <p id="result"></p>
+        <!-- 基本情報を表示するテーブル -->
+        <table class="uk-table uk-table-divider">
+            <thead>
+                <tr>
+                    <th>部隊ランク</th>
+                    <th>部隊名</th>
+                    <th>ポジション</th>
+                    <th>年齢</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="partyRank"></td>
+                    <td id="partyName"></td>
+                    <td id="position"></td>
+                    <td id="age"></td>
+                </tr>
+            </tbody>
+        </table>
 
         <h3>装備トリガー</h3>
         <h4>メイン</h4>
