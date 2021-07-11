@@ -35,43 +35,44 @@
         </div>
     </nav>
 
-    <h1>オペレーター登録ページ</h1>
-    名前:<input id="name" value="" type="textfield">
-    <br>
-
-    年齢:<input id="age" type="number" value="15">
-    <br>
-
-    隊長:<input id="is_captain" value="" type="checkbox">
-    <br>
-
-    所属部隊:
-    <select id="party">
-        <option value="null">所属なし</option>
-    </select>
-    <br>
-
-    画像URL:<input id="image" value="" type="textfield">
-    <br>
-    <img id="imageUrlChecker" src="https://deliver.commons.nicovideo.jp/thumbnail/nc209714" width="auto" height="100">
-    <br>
-
-    ステータス
-    <div id="status_form">
-        トリオン:<input id="trion"　type="number" value="0">
-        機器操作:<input id="equipment_operation" type="number" value="0">
-        <br>
-        情報分析:<input id="analysis" type="number" value="0">
-        並列処理:<input id="parallel_thinking" type="number" value="0">
-        <br>
-        戦術:<input id="tactics" type="number" value="0">
-        指揮:<input id="order" type="number" value="0">
+    <div class="uk-margin">
+        <label class="uk-form-label">名前</label>
+        <input class="uk-input uk-form-small uk-form-width-small" id="name" value="" type="textfield">
+        
+        <label class="uk-form-label">年齢</label>
+        <input class="uk-input uk-form-small uk-form-width-xsmall" id="age" type="number" value="15">
+        
+        <label class="uk-form-label">所属部隊</label>
+        <select class="uk-select uk-form-small uk-form-width-small" id="party">
+            <option value="null">所属なし</option>
+        </select>
+        
+        <label class="uk-form-label">隊長</label>
+        <input class="uk-checkbox" id="is_captain" value="" type="checkbox">
+    </div>
+    <div class="uk-margin">
+        <label class="uk-form-label">画像URL</label>
+        <input class="uk-input uk-form-small uk-form-width-large" id="image" value="" type="textfield">
+        <img id="imageUrlChecker" src="https://deliver.commons.nicovideo.jp/thumbnail/nc209714" width="auto" height="100">
+    </div>
+    <div class="uk-margin" id="status_form">
+        <label class="uk-form-label">トリオン</label>
+        <input class="uk-input uk-form-small uk-form-width-xsmall" id="trion"　type="number" value="0">
+        <label class="uk-form-label">機器操作</label>
+        <input class="uk-input uk-form-small uk-form-width-xsmall" id="equipment_operation" type="number" value="0">
+        <label class="uk-form-label">情報分析</label>
+        <input class="uk-input uk-form-small uk-form-width-xsmall" id="analysis" type="number" value="0">
+        <label class="uk-form-label">並列処理</label>
+        <input class="uk-input uk-form-small uk-form-width-xsmall" id="parallel_thinking" type="number" value="0">
+        <label class="uk-form-label">戦術</label>
+        <input class="uk-input uk-form-small uk-form-width-xsmall" id="tactics" type="number" value="0">
+        <label class="uk-form-label">指揮</label>
+        <input class="uk-input uk-form-small uk-form-width-xsmall" id="order" type="number" value="0">
     </div>
 
-    <br>
-    <button onclick="button1Pressed()">登録</button>
-    <br>
-    <p id="result"></p>
+    <div class="uk-margin">
+        <button class="uk-button uk-button-primary" onclick="button1Pressed()">登録</button>
+    </div>
 
     <script>
         $(document).ready(function () {
