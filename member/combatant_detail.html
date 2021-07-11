@@ -31,10 +31,13 @@
             const objects = await osql.connect(sql);
             const object = objects[0];
 
-            document.getElementById("partyRank").innerText = object.alphabet_rank + '級' + object.number_rank + '位';
-            document.getElementById("partyName").innerText = object["party.party_name"] + '隊';
-            document.getElementById("position").innerText = object.position;
-            document.getElementById("age").innerText = object.age + '歳';
+            document.getElementById("memberImage").src = object.image_url;
+
+            var html = '';
+            html += `<li>${object.alphabet_rank}級${object.number_rank}位　${object["party.party_name"]}隊所属</li>`;
+            html += `<li>${object.position}</li>`;
+            html += `<li>${object.age}歳</li>`;
+            document.getElementById('basicInfo').innerHTML = html;
         }
 
         async function showTrriger(member_name) {
@@ -112,35 +115,17 @@
     </nav>
 
     <div class="uk-container">
-        <h2 id="memberName"></h2>
+        <img src="" width="120" height="120" id="memberImage">
+        <span id="memberName" style="margin-left:50px; font-size: 30px;"></span>
 
-        <!-- 基本情報の表示 -->
-        <table class="uk-table uk-table-divider" style="max-width:700px;">
-            <thead>
-                <tr>
-                    <th>部隊ランク</th>
-                    <th>部隊名</th>
-                    <th>ポジション</th>
-                    <th>年齢</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td id="partyRank"></td>
-                    <td id="partyName"></td>
-                    <td id="position"></td>
-                    <td id="age"></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- ステータスの表示 -->
-        <div style="width:600px; height:300px;">
-            <canvas id="myRaderChart"></canvas>
-        </div>
-
-        <!-- 装備トリガーの表示 -->
         <div class="uk-child-width-expand@s uk-grid-large" uk-grid>
+            <!-- 基本情報の表示 -->
+            <div class="uk-card uk-card-default uk-card-body">
+                <h4>基本情報</h4>
+                <ul class="uk-list uk-list-square" id="basicInfo">
+                </ul>
+            </div>
+            <!-- 装備トリガーの表示 -->
             <div class="uk-card uk-card-default uk-card-body">
                 <h4>メイントリガー</h4>
                 <ul class="uk-list uk-list-square" id="mainTrriger">
@@ -152,8 +137,13 @@
                 </ul>
             </div>
         </div>
+
+        <!-- ステータスの表示 -->
+        <div style="width:800px; height:400px;">
+            <canvas id="myRaderChart"></canvas>
+        </div>
         
-        <a id="editPageLink" href="">データを修正する</a>
+        <a id="editPageLink" href="">データを修正更新する</a>
         <!-- <button onclick="button1Pressed()">データを修正する</button> -->
         <br>
     </div>
