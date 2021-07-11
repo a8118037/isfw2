@@ -293,7 +293,7 @@
             const name = '"' + document.getElementById('name').value + '"';
             const sql = `delete from trriger_set where member_name=${name}`;
             const objects = await osql.connect(sql);
-            insertIntoTrrigerSet();
+            await insertIntoTrrigerSet();
         }
 
         async function insertIntoTrrigerSet() {
