@@ -16,97 +16,92 @@
     <script>
 
         $(document).ready(function () {
-            execSelectA();
+            showARankParty();
+            showBRankParty();
         });
 
-        $(document).ready(function () {
-            execSelectB();
-        });
-
-        async function execSelectA() {
-            var sql = 'select party_id,party_name,alphabet_rank,number_rank from party where alphabet_rank="A" order by number_rank asc';
-            var objects = await osql.connect(sql);
-            console.log(objects);
-            var html = '';
-            html = html + '<table border="1">';
-
-
-
-            for (var i = 0; i < objects.length; i++) {
-                // html = html + '<li>';
-                var object = objects[i];
-                // html = html + '<td>' + object.party_id + '</td>';
-                html = html + '<ol>' + object.alphabet_rank + "級" + object.number_rank + "位　" + object.party_name + "隊" + '</ol>';
-
-                var member_sql = 'select * from party inner join member where party.party_name = member.party_name and alphabet_rank = "A" and not position= "オペレーター" and number_rank= "' + object.number_rank + '%"  order by is_captain desc';
-                var member_objects = await osql.connect(member_sql);
-                console.log(member_objects);
-
-                for (var t = 0; t < member_objects.length; t++) {
-                    var member_object = member_objects[t];
-                    html = html + '<li>' + '<a href="member/combatant_detail.html?member_name=' + member_object.member_name + '"> ' + member_object.member_name + ' </a>' + '</li>';
-                    // html = html + '<li>' + member_object.member_name + '</li>';
+        async function showARankParty() {
+            var sql = `select * from party where alphabet_rank="A" order by number_rank asc;`;
+            const parties = await osql.connect(sql);
+            let html = '';
+            for (var i = 0; i < parties.length; i++) {
+                var party = parties[i];
+                // 部隊に所属している戦闘員のリストを作成
+                var sql = `select * from member where party_name = "${party.party_name}" and not position= "オペレーター" order by is_captain desc;`;
+                var combatants = await osql.connect(sql);
+                var htmlLi = '';
+                for (var j = 0; j < combatants.length; j++) {
+                    var combatant = combatants[j];
+                    htmlLi += `
+                        <li>
+                            <a href="member/combatant_detail.html?member_name=${combatant.member_name}">
+                                ${combatant.member_name}
+                            </a>
+                        </li>`;
                 }
-
-                var ope_sql = 'select * from party inner join member where party.party_name = member.party_name and position= "オペレーター" and alphabet_rank = "A" and number_rank= "' + object.number_rank + '%" order by is_captain desc';
-                var ope_objects = await osql.connect(ope_sql);
-                console.log(ope_objects);
-
-                for (var s = 0; s < ope_objects.length; s++) {
-                    var ope_object = ope_objects[s];
-                    // html = html + '<li>' + ope_object.member_name + '</li>';
-                    html = html + '<li>' + '<a href="member/operator_detail.html?member_name=' + ope_object.member_name + '"> ' + ope_object.member_name + ' </a>' + '</li>';
+                // 部隊に所属していオペレータのリストを作成
+                var sql = `select * from member where party_name = "${party.party_name}" and position= "オペレーター";`;
+                var operators = await osql.connect(sql);
+                for (var j = 0; j < operators.length; j++) {
+                    var operator = operators[j];
+                    htmlLi += `
+                        <li>
+                            <a href="member/operator_detail.html?member_name=${operator.member_name}">
+                                ${operator.member_name}
+                            </a>
+                        </li>`
                 }
-
-
-
-                html = html + '</li>';
+                const partyInfo = `${party.alphabet_rank}級 ${party.number_rank}位 ${party.party_name}隊`;
+                html += `
+                    <div class="uk-card uk-card-default uk-card-body">
+                        <h4>${partyInfo}</h4>
+                        <ul class="uk-list uk-list-square">${htmlLi}</ul>
+                    </div>`
             }
-            html = html + '</table>';
-            document.getElementById('result').innerHTML = html;
+            document.getElementById('RankA').innerHTML = html;
         }
 
-
-        async function execSelectB() {
-            var sql = 'select party_id,party_name,alphabet_rank,number_rank from party where alphabet_rank="B" order by number_rank asc';
-            var objects = await osql.connect(sql);
-            console.log(objects);
-            var html = '';
-            html = html + '<table border="1">';
-
-            for (var i = 0; i < objects.length; i++) {
-                var object = objects[i];
-                html = html + '<ol>' + object.alphabet_rank + "級" + object.number_rank + "位　" + object.party_name + "隊" + '</ol>';
-
-                var member_sql = 'select * from party inner join member where party.party_name = member.party_name and not position= "オペレーター" and alphabet_rank = "B" and number_rank= "' + object.number_rank + '%" order by is_captain desc';
-                var member_objects = await osql.connect(member_sql);
-                console.log(member_objects);
-
-                for (var t = 0; t < member_objects.length; t++) {
-                    var member_object = member_objects[t];
-                    html = html + '<li>' + '<a href="member/combatant_detail.html?member_name=' + member_object.member_name + '"> ' + member_object.member_name + ' </a>' + '</li>';
+        async function showBRankParty() {
+            var sql = `select * from party where alphabet_rank="B" order by number_rank asc;`;
+            const parties = await osql.connect(sql);
+            let html = '';
+            for (var i = 0; i < parties.length; i++) {
+                var party = parties[i];
+                // 部隊に所属している戦闘員のリストを作成
+                var sql = `select * from member where party_name = "${party.party_name}" and not position= "オペレーター" order by is_captain desc;`;
+                var combatants = await osql.connect(sql);
+                var htmlLi = '';
+                for (var j = 0; j < combatants.length; j++) {
+                    var combatant = combatants[j];
+                    htmlLi += `
+                        <li>
+                            <a href="member/combatant_detail.html?member_name=${combatant.member_name}">
+                                ${combatant.member_name}
+                            </a>
+                        </li>`;
                 }
-
-                var ope_sql = 'select * from party inner join member where party.party_name = member.party_name and position= "オペレーター" and alphabet_rank = "B" and number_rank= "' + object.number_rank + '%" order by is_captain desc';
-                var ope_objects = await osql.connect(ope_sql);
-                console.log(ope_objects);
-
-                for (var s = 0; s < ope_objects.length; s++) {
-                    var ope_object = ope_objects[s];
-                    // html = html + '<li>' + ope_object.member_name + '</li>';
-                    html = html + '<li>' + '<a href="member/operator_detail.html?member_name=' + ope_object.member_name + '"> ' + ope_object.member_name + ' </a>' + '</li>';
+                // 部隊に所属していオペレータのリストを作成
+                var sql = `select * from member where party_name = "${party.party_name}" and position= "オペレーター";`;
+                var operators = await osql.connect(sql);
+                for (var j = 0; j < operators.length; j++) {
+                    var operator = operators[j];
+                    htmlLi += `
+                        <li>
+                            <a href="member/operator_detail.html?member_name=${operator.member_name}">
+                                ${operator.member_name}
+                            </a>
+                        </li>`
                 }
-
-
-                html = html + '</li>';
+                const partyInfo = `${party.alphabet_rank}級 ${party.number_rank}位 ${party.party_name}隊`;
+                html += `
+                    <div class="uk-card uk-card-default uk-card-body">
+                        <h4>${partyInfo}</h4>
+                        <ul class="uk-list uk-list-square">${htmlLi}</ul>
+                    </div>`
             }
-            html = html + '</table>';
-            document.getElementById('result2').innerHTML = html;
+            document.getElementById('RankB').innerHTML = html;
         }
-
-
     </script>
-
 </head>
 
 <body>
@@ -127,11 +122,8 @@
     </nav>
 
     <div class="uk-container">
-        <h1>隊員一覧</h1>
-        <h2>A級所属</h2>
-        <p id="result"></p>
-        <h2>B級所属</h2>
-        <p id="result2"></p>
+        <div class="uk-child-width-1-2@s uk-child-width-1-4@m" uk-grid id="RankA"></div>
+        <div class="uk-child-width-1-2@s uk-child-width-1-4@m" uk-grid id="RankB"></div>
     </div>
 </body>
 
