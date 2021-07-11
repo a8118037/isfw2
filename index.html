@@ -39,7 +39,7 @@
 
                 for (var t = 0; t < member_objects.length; t++) {
                     var member_object = member_objects[t];
-                    html = html + '<li>' + '<a href="conbatant_detail.html?member_name=' + member_object.member_name + '"> ' + member_object.member_name + ' </a>' + '</li>';
+                    html = html + '<li>' + '<a href="member/combatant_detail.html?member_name=' + member_object.member_name + '"> ' + member_object.member_name + ' </a>' + '</li>';
                     // html = html + '<li>' + member_object.member_name + '</li>';
                 }
 
@@ -50,7 +50,7 @@
                 for (var s = 0; s < ope_objects.length; s++) {
                     var ope_object = ope_objects[s];
                     // html = html + '<li>' + ope_object.member_name + '</li>';
-                    html = html + '<li>' + '<a href="operator_detail.html?member_name=' + ope_object.member_name + '"> ' + ope_object.member_name + ' </a>' + '</li>';
+                    html = html + '<li>' + '<a href="member/operator_detail.html?member_name=' + ope_object.member_name + '"> ' + ope_object.member_name + ' </a>' + '</li>';
                 }
 
 
@@ -79,7 +79,7 @@
 
                 for (var t = 0; t < member_objects.length; t++) {
                     var member_object = member_objects[t];
-                    html = html + '<li>' + '<a href="conbatant_detail.html?member_name=' + member_object.member_name + '"> ' + member_object.member_name + ' </a>' + '</li>';
+                    html = html + '<li>' + '<a href="member/combatant_detail.html?member_name=' + member_object.member_name + '"> ' + member_object.member_name + ' </a>' + '</li>';
                 }
 
                 var ope_sql = 'select * from party inner join member where party.party_name = member.party_name and position= "オペレーター" and alphabet_rank = "B" and number_rank= "' + object.number_rank + '%" order by is_captain desc';
@@ -89,7 +89,7 @@
                 for (var s = 0; s < ope_objects.length; s++) {
                     var ope_object = ope_objects[s];
                     // html = html + '<li>' + ope_object.member_name + '</li>';
-                    html = html + '<li>' + '<a href="operator_detail.html?member_name=' + ope_object.member_name + '"> ' + ope_object.member_name + ' </a>' + '</li>';
+                    html = html + '<li>' + '<a href="member/operator_detail.html?member_name=' + ope_object.member_name + '"> ' + ope_object.member_name + ' </a>' + '</li>';
                 }
 
 
