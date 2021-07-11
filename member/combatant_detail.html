@@ -20,7 +20,7 @@
             const memberName = osql.getParam('member_name');
             document.getElementById("memberName").innerText = memberName;
             showBasicInfo(memberName);
-
+            showTrriger(memberName);
             // 編集ページヘのリンクを作成
             document.getElementById("editPageLink").href = 'combatant_edit.html?member_name=' + memberName;
         });
@@ -30,53 +30,28 @@
             const objects = await osql.connect(sql);
             const object = objects[0];
 
-
             document.getElementById("partyRank").innerText = object.alphabet_rank + '級' + object.number_rank + '位';
             document.getElementById("partyName").innerText = object["party.party_name"] + '隊';
             document.getElementById("position").innerText = object.position;
             document.getElementById("age").innerText = object.age + '歳';
         }
-        
-        $().ready(function () {
-            showMainTrriger();
-        });
 
-        async function showMainTrriger() {
-            var html = '';
-            var member_name = osql.getParam('member_name');
+        async function showTrriger(member_name) {
             var sql = `select * from trriger_set where member_name="${member_name}" and is_main ="1";`;
             var objects = await osql.connect(sql);
-            console.log(objects);
-
-            html = html + '<ul>';
-            // html = html + 'メイントリガー';
-            for (var i = 0; i < objects.length; i++) {
-                var object = objects[i];
-                html = html + '<li>' + object.trriger_name + '</li>';
-            }
-            html = html + '</ul>';
-            document.getElementById('result2').innerHTML = html;
-        }
-
-        $().ready(function () {
-            showSubTrriger();
-        });
-
-        async function showSubTrriger() {
             var html = '';
-            var member_name = osql.getParam('member_name');
+            for (var i = 0; i < objects.length; i++) {
+                html = html + '<li>' + objects[i].trriger_name + '</li>';
+            }
+            document.getElementById('mainTrriger').innerHTML = html;
+
             var sql = `select * from trriger_set where member_name="${member_name}" and is_main ="0";`;
             var objects = await osql.connect(sql);
-            console.log(objects);
-
-            html = html + '<ul>';
-            // html = html + 'メイントリガー';
+            var html = '';
             for (var i = 0; i < objects.length; i++) {
-                var object = objects[i];
-                html = html + '<li>' + object.trriger_name + '</li>';
+                html = html + '<li>' + objects[i].trriger_name + '</li>';
             }
-            html = html + '</ul>';
-            document.getElementById('result3').innerHTML = html;
+            document.getElementById('subTrriger').innerHTML = html;
         }
 
         $().ready(function () {
@@ -151,7 +126,7 @@
     <div class="uk-container">
         <h2 id="memberName"></h2>
 
-        <!-- 基本情報を表示するテーブル -->
+        <!-- 基本情報の表示 -->
         <table class="uk-table uk-table-divider">
             <thead>
                 <tr>
@@ -171,11 +146,19 @@
             </tbody>
         </table>
 
-        <h3>装備トリガー</h3>
-        <h4>メイン</h4>
-        <p id="result2"></p>
-        <h4>サブ</h4>
-        <p id="result3"></p>
+        <!-- 装備トリガーの表示 -->
+        <div class="uk-child-width-expand@s" uk-grid>
+            <div>
+                <h4>メイントリガー</h4>
+                <ul class="uk-list uk-list-square" id="mainTrriger">
+                </ul>
+            </div>
+            <div>
+                <h4>サブトリガー</h4>
+                <ul class="uk-list uk-list-square" id="subTrriger">
+                </ul>
+            </div>
+        </div>
 
         <h3>能力レーダーチャート</h3>
         <canvas id="myRaderChart"></canvas>
