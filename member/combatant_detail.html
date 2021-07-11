@@ -21,6 +21,7 @@
             document.getElementById("memberName").innerText = memberName;
             showBasicInfo(memberName);
             showTrriger(memberName);
+            showStatusChart(memberName);
             // 編集ページヘのリンクを作成
             document.getElementById("editPageLink").href = 'combatant_edit.html?member_name=' + memberName;
         });
@@ -54,39 +55,26 @@
             document.getElementById('subTrriger').innerHTML = html;
         }
 
-        $().ready(function () {
-            drowGraph();
-        });
+        async function showStatusChart(member_name) {
+            const sql = `select * from combatant where member_name="${member_name}";`;
+            const objects = await osql.connect(sql);
+            const object = objects[0];
 
-        async function drowGraph() {
-            var member_name = osql.getParam('member_name');
-            var sql = `select * from combatant where member_name="${member_name}";`;
-            var objects = await osql.connect(sql);
-            console.log(objects);
-
-            var object = objects[0];
-
-            // オペレーターからもってくるやーつをここに書く
             var ctx = document.getElementById("myRaderChart");
             var myRadarChart = new Chart(ctx, {
                 type: 'radar',
                 data: {
                     labels: ["トリオン", "攻撃", "防御・援護", "機動", "技術", "射程", "指揮", "特殊戦術"],
                     datasets: [{
-                        label: object.member_name,
+                        label: 'ステータス',
                         data: [object.trion_status, object.attack_status, object.defence_support_status, object.mobility_status, object.technique_status, object.range_status, object.order_status, object.special_tactics_status],
                         backgroundColor: 'RGBA(225,95,150, 0.5)',
                         borderColor: 'RGBA(225,95,150, 1)',
                         borderWidth: 1,
                         pointBackgroundColor: 'RGB(46,106,177)'
-
                     }]
                 },
                 options: {
-                    title: {
-                        display: true,
-                        text: 'パラメーター'
-                    },
                     scale: {
                         ticks: {
                             suggestedMin: 0,
@@ -127,7 +115,7 @@
         <h2 id="memberName"></h2>
 
         <!-- 基本情報の表示 -->
-        <table class="uk-table uk-table-divider">
+        <table class="uk-table uk-table-divider" style="max-width:700px;">
             <thead>
                 <tr>
                     <th>部隊ランク</th>
@@ -146,6 +134,11 @@
             </tbody>
         </table>
 
+        <!-- ステータスの表示 -->
+        <div style="width:600px; height:300px;">
+            <canvas id="myRaderChart"></canvas>
+        </div>
+
         <!-- 装備トリガーの表示 -->
         <div class="uk-child-width-expand@s" uk-grid>
             <div>
@@ -159,12 +152,7 @@
                 </ul>
             </div>
         </div>
-
-        <h3>能力レーダーチャート</h3>
-        <canvas id="myRaderChart"></canvas>
-
-        <br>
-        <br>
+        
         <a id="editPageLink" href="">データを修正する</a>
         <!-- <button onclick="button1Pressed()">データを修正する</button> -->
         <br>
