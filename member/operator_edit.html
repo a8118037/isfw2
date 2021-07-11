@@ -72,7 +72,7 @@
 
         async function setRegisteredData() {
             await makePartyForm();
-            const name = '氷見亜季'; // todo この値はgetパラメータから取得する
+            const name = osql.getParam('member_name');
             var sql = `select * from member where member_name="${name}";`
             var objects = await osql.connect(sql);
             document.getElementById('name').value = objects[0].member_name;
@@ -148,11 +148,10 @@
             var objects = await osql.connect(sql_for_operator);
         }
 
-        function button1Pressed() {
-            updateMember();
-            updateOperator();
-            document.getElementById('result').innerHTML = '変更が完了しました';
-
+        async function button1Pressed() {
+            await updateMember();
+            await updateOperator();
+            location.href = 'operator_detail.html?member_name=' + osql.getParam('member_name');
         }
 
         var member_image_url_form = document.getElementById('image');

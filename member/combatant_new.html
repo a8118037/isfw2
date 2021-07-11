@@ -250,14 +250,14 @@
             }
         }
 
-        function button1Pressed() {
+        async function button1Pressed() {
             if(!isValidForm()) {
                 return 
             }
-            insertIntoMember();
-            insertIntoCombatant();
-            insertIntoTrriger_set();
-            document.getElementById('result').innerHTML = '登録が完了しました';
+            await insertIntoMember();
+            await insertIntoCombatant();
+            await insertIntoTrriger_set();
+            location.href = 'combatant_detail.html?member_name=' + document.getElementById('name').value;
 
         }
 

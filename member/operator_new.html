@@ -130,13 +130,13 @@
             var objects = await osql.connect(sql_for_operator);
         }
 
-        function button1Pressed() {
+        async function button1Pressed() {
             if(!isValidForm()) {
                 return 
             }
-            insertIntoMember();
-            insertIntoOperator();
-            document.getElementById('result').innerHTML = '登録が完了しました';
+            await insertIntoMember();
+            await insertIntoOperator();
+            location.href = 'operator_detail.html?member_name=' + document.getElementById('name').value;
 
         }
 

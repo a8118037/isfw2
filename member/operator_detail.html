@@ -14,6 +14,8 @@
 
         $().ready(function () {
             execSelect();
+            // 編集ページヘのリンクを作成
+            document.getElementById("editPageLink").href = 'operator_edit.html?member_name=' + osql.getParam('member_name');
         });
 
         async function execSelect() {
@@ -106,7 +108,7 @@
 
     <br>
     <br>
-    <a href="operator_edit.html">データを修正する</a>
+    <a id="editPageLink" href="">データを修正する</a>
     <!-- <button onclick="button1Pressed()">データを修正する</button> -->
     <br>
 
