@@ -18,58 +18,42 @@
     <script>
 
         $().ready(function () {
-            execSelect();
+            const memberName = osql.getParam('member_name');
+            document.getElementById("memberName").innerText = memberName;
+            showBasicInfo(memberName);
+            showStatusChart(memberName);
             // 編集ページヘのリンクを作成
-            document.getElementById("editPageLink").href = 'operator_edit.html?member_name=' + osql.getParam('member_name');
+            document.getElementById("editPageLink").href = 'operator_edit.html?member_name=' + memberName;
         });
 
-        async function execSelect() {
+        async function showBasicInfo(member_name) {
+            const sql = `select * from party inner join member where party.party_name = member.party_name and member_name="${member_name}";`;
+            const objects = await osql.connect(sql);
+            const object = objects[0];
+
+            document.getElementById("memberImage").src = object.image_url;
+
             var html = '';
-            var member_name = osql.getParam('member_name');
-            var sql = `select * from party inner join member where party.party_name = member.party_name and member_name="${member_name}";`;
-            var objects = await osql.connect(sql);
-            console.log(objects);
-            if (objects.length <= 0) {
-                document.getElementById('result').innerHTML = 'not found';
-                return;
-            }
-            var object = objects[0];
-
-            html = html + '<ul>';
-            html = html + object.member_name;
-
-            html = html + '<li>' + '所属部隊:' + object.alphabet_rank + '級' + object.number_rank + '位' + object.party_name + '隊' + '</li>';
-            html = html + '<li>' + 'ポジション:' + object.position + '</li>';
-            html = html + '<li>' + '年齢:' + object.age + '</li>';
-
-            html = html + '</ul>'
-            document.getElementById('result').innerHTML = html;
+            html += `<li>${object.alphabet_rank}級${object.number_rank}位　${object["party.party_name"]}隊所属</li>`;
+            html += `<li>${object.position}</li>`;
+            html += `<li>${object.age}歳</li>`;
+            document.getElementById('basicInfo').innerHTML = html;
         }
 
-        $().ready(function () {
-            drowGraph();
-        });
+        async function showStatusChart(member_name) {
+            const sql = `select * from operator where member_name="${member_name}";`;
+            console.log(sql)
+            const objects = await osql.connect(sql);
+            const object = objects[0];
+            console.log(objects)
 
-        async function drowGraph() {
-
-            var member_name = osql.getParam('member_name');
-            var sql = `select * from operator where member_name="${member_name}";`;
-            var objects = await osql.connect(sql);
-            console.log(objects);
-            if (objects.length <= 0) {
-                document.getElementById('result').innerHTML = 'not found';
-                return;
-            }
-            var object = objects[0];
-
-            // オペレーターからもってくるやーつをここに書く
             var ctx = document.getElementById("myRaderChart");
             var myRadarChart = new Chart(ctx, {
                 type: 'radar',
                 data: {
                     labels: ["トリオン", "機器操作", "情報分析", "並列処理", "戦術", "指揮"],
                     datasets: [{
-                        label: object.member_name,
+                        label: 'ステータス',
                         data: [object.trion_status, object.equipment_operation_status, object.analysis_status, object.parallel_thinking_status, object.tactics_status, object.order_status],
                         backgroundColor: 'RGBA(225,95,150, 0.5)',
                         borderColor: 'RGBA(225,95,150, 1)',
@@ -79,10 +63,6 @@
                     }]
                 },
                 options: {
-                    title: {
-                        display: true,
-                        text: 'パラメーター'
-                    },
                     scale: {
                         ticks: {
                             suggestedMin: 0,
@@ -96,11 +76,8 @@
                 }
             });
         }
-
     </script>
-
 </head>
-
 
 <body>
     <nav class="uk-navbar-container" uk-navbar>
@@ -118,20 +95,25 @@
             </ul>
         </div>
     </nav>
+
     <div class="uk-container">
-        <h1>オペレーター詳細ページ</h1>
-        
-        <h3>基本情報</h3>
-        <p id="result"></p>
-        
-        <h3>能力レーダーチャート</h3>
-        <canvas id="myRaderChart"></canvas>
-        
-        <br>
-        <br>
-        <a id="editPageLink" href="">データを修正する</a>
+        <img src="" width="120" height="120" id="memberImage">
+        <span id="memberName" style="margin-left:50px; font-size: 30px;"></span>
+
+        <!-- 基本情報の表示 -->
+        <div class="uk-card uk-card-default uk-card-body">
+            <h4>基本情報</h4>
+            <ul class="uk-list uk-list-square" id="basicInfo">
+            </ul>
+        </div>
+
+        <!-- ステータスの表示 -->
+        <div style="width:800px; height:400px;">
+            <canvas id="myRaderChart"></canvas>
+        </div>
+
+        <a id="editPageLink" href="">データを更新する</a>
         <!-- <button onclick="button1Pressed()">データを修正する</button> -->
-        <br>
     </div>
 </body>
 
