@@ -36,107 +36,112 @@
     </nav>
 
     <h1>戦闘員登録ページ</h1>
-    名前:<input id="name" value="" type="textfield">
-    <br>
 
-    年齢:<input id="age" type="number" value="15">
-    <br>
-
-    隊長:<input id="is_captain" value="" type="checkbox">
-    <br>
-
-    所属部隊:
-    <select id="party">
-        <option value="null">所属なし</option>
-    </select>
-    <br>
-
-    画像URL:<input id="image" value="" type="textfield">
-    <br>
-    <img id="imageUrlChecker" src="https://deliver.commons.nicovideo.jp/thumbnail/nc209714" width="auto" height="100">
-    <br>
-
-    ポジション:
-    <select id="position">
-        <option value="アタッカー">アタッカー</option>
-        <option value="ガンナー">ガンナー</option>
-        <option value="シューター">シューター</option>
-        <option value="スナイパー">スナイパー</option>
-        <option value="トラッパー">トラッパー</option>
-        <option value="スポッター">スポッター</option>
-        <option value="オールラウンダー">オールラウンダー</option>
-    </select>
-    <br>
-
-    ステータス
-    <div id="status_form">
-        トリオン:<input id="trion"　type="number" value="0">
-        攻撃:<input id="attack" type="number" value="0">
-        <br>
-        防御・支援:<input id="defence_support" type="number" value="0">
-        機動:<input id="mobility" type="number" value="0">
-        <br>
-        技術:<input id="technique" type="number" value="0">
-        射程:<input id="range" type="number" value="0">
-        <br>
-        指揮:<input id="order" type="number" value="0">
-        特殊戦術:<input id="special_tactics" type="number" value="0">
-    </div>
-
-    メイントリガー
-    <div id="main_trriger_form">
-        <select id="main_trriger_1">
-            <option value="null" selected>なし</option>
+    <div class="uk-margin">
+        <label class="uk-form-label">名前</label>
+        <input class="uk-input uk-form-small uk-form-width-small" id="name" value="" type="textfield">
+        
+        <label class="uk-form-label">年齢</label>
+        <input class="uk-input uk-form-small uk-form-width-xsmall" id="age" type="number" value="15">
+        
+        <label class="uk-form-label">所属部隊</label>
+        <select class="uk-select uk-form-small uk-form-width-small" id="party">
+            <option value="null">所属なし</option>
         </select>
-        <select id="main_trriger_2">
-            <option value="null" selected>なし</option>
-        </select>
-        <select id="main_trriger_3">
-            <option value="null" selected>なし</option>
-        </select>
-        <select id="main_trriger_4">
-            <option value="null" selected>なし</option>
-        </select>
-        <select id="main_trriger_5">
-            <option value="null" selected>なし</option>
-        </select>
-        <select id="main_trriger_6">
-            <option value="null" selected>なし</option>
-        </select>
-        <select id="main_trriger_7">
-            <option value="null" selected>なし</option>
+        
+        <label class="uk-form-label">隊長</label>
+        <input class="uk-checkbox" id="is_captain" value="" type="checkbox">
+
+        <label class="uk-form-label">ポジション</label>
+        <select class="uk-select uk-form-small uk-form-width-small" id="position">
+            <option value="アタッカー">アタッカー</option>
+            <option value="ガンナー">ガンナー</option>
+            <option value="シューター">シューター</option>
+            <option value="スナイパー">スナイパー</option>
+            <option value="トラッパー">トラッパー</option>
+            <option value="スポッター">スポッター</option>
+            <option value="オールラウンダー">オールラウンダー</option>
         </select>
     </div>
-    サブトリガー
-    <div id="sub_trriger_form">
-        <select id="sub_trriger_1">
-            <option value="null" selected>なし</option>
-        </select>
-        <select id="sub_trriger_2">
-            <option value="null" selected>なし</option>
-        </select>
-        <select id="sub_trriger_3">
-            <option value="null" selected>なし</option>
-        </select>
-        <select id="sub_trriger_4">
-            <option value="null" selected>なし</option>
-        </select>
-        <select id="sub_trriger_5">
-            <option value="null" selected>なし</option>
-        </select>
-        <select id="sub_trriger_6">
-            <option value="null" selected>なし</option>
-        </select>
-        <select id="sub_trriger_7">
-            <option value="null" selected>なし</option>
-        </select>
+    <div class="uk-margin">
+        <label class="uk-form-label">画像URL</label>
+        <input class="uk-input uk-form-small uk-form-width-large" id="image" value="" type="textfield">
+        <img id="imageUrlChecker" src="https://deliver.commons.nicovideo.jp/thumbnail/nc209714" width="auto" height="100">
+    </div>
+    <div class="uk-margin" id="status_form">
+        <label class="uk-form-label">トリオン</label>
+        <input class="uk-input uk-form-small uk-form-width-xsmall" id="trion"　type="number" value="0">
+        <label class="uk-form-label">攻撃</label>
+        <input class="uk-input uk-form-small uk-form-width-xsmall" id="attack" type="number" value="0">
+        <label class="uk-form-label">防御・支援</label>
+        <input class="uk-input uk-form-small uk-form-width-xsmall" id="defence_support" type="number" value="0">
+        <label class="uk-form-label">機動</label>
+        <input class="uk-input uk-form-small uk-form-width-xsmall" id="mobility" type="number" value="0">
+        <label class="uk-form-label">技術</label>
+        <input class="uk-input uk-form-small uk-form-width-xsmall" id="technique" type="number" value="0">
+        <label class="uk-form-label">射程</label>
+        <input class="uk-input uk-form-small uk-form-width-xsmall" id="range" type="number" value="0">
+        <label class="uk-form-label">指揮</label>
+        <input class="uk-input uk-form-small uk-form-width-xsmall" id="order" type="number" value="0">
+        <label class="uk-form-label">特殊戦術</label>
+        <input class="uk-input uk-form-small uk-form-width-xsmall" id="special_tactics" type="number" value="0">
+    </div>
+    <div class="uk-margin">
+        <label class="uk-form-label">メイントリガー</label>
+        <div id="main_trriger_form">
+            <select class="uk-select uk-form-small uk-form-width-small" id="main_trriger_1">
+                <option value="null" selected>なし</option>
+            </select>
+            <select class="uk-select uk-form-small uk-form-width-small" id="main_trriger_2">
+                <option value="null" selected>なし</option>
+            </select>
+            <select class="uk-select uk-form-small uk-form-width-small" id="main_trriger_3">
+                <option value="null" selected>なし</option>
+            </select>
+            <select class="uk-select uk-form-small uk-form-width-small" id="main_trriger_4">
+                <option value="null" selected>なし</option>
+            </select>
+            <select class="uk-select uk-form-small uk-form-width-small" id="main_trriger_5">
+                <option value="null" selected>なし</option>
+            </select>
+            <select class="uk-select uk-form-small uk-form-width-small" id="main_trriger_6">
+                <option value="null" selected>なし</option>
+            </select>
+            <select class="uk-select uk-form-small uk-form-width-small" id="main_trriger_7">
+                <option value="null" selected>なし</option>
+            </select>
+        </div>
+    </div>
+    <div class="uk-margin">
+        <label class="uk-form-label">サブトリガー</label>
+        <div id="sub_trriger_form">
+            <select class="uk-select uk-form-small uk-form-width-small" id="sub_trriger_1">
+                <option value="null" selected>なし</option>
+            </select>
+            <select class="uk-select uk-form-small uk-form-width-small" id="sub_trriger_2">
+                <option value="null" selected>なし</option>
+            </select>
+            <select class="uk-select uk-form-small uk-form-width-small" id="sub_trriger_3">
+                <option value="null" selected>なし</option>
+            </select>
+            <select class="uk-select uk-form-small uk-form-width-small" id="sub_trriger_4">
+                <option value="null" selected>なし</option>
+            </select>
+            <select class="uk-select uk-form-small uk-form-width-small" id="sub_trriger_5">
+                <option value="null" selected>なし</option>
+            </select>
+            <select class="uk-select uk-form-small uk-form-width-small" id="sub_trriger_6">
+                <option value="null" selected>なし</option>
+            </select>
+            <select class="uk-select uk-form-small uk-form-width-small" id="sub_trriger_7">
+                <option value="null" selected>なし</option>
+            </select>
+        </div>
     </div>
 
-
-    <br>
-    <button onclick="button1Pressed()">登録</button>
-    <br>
-    <p id="result"></p>
+    <div class="uk-margin">
+        <button class="uk-button uk-button-primary" onclick="button1Pressed()">登録</button>
+    </div>
 
     <script>
         $(document).ready(function () {
