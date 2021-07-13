@@ -52,20 +52,31 @@
         </div>
     </nav>
 
-    部隊名:<input id="tf1" value="" type="textfield">
-    <br>
-    級:
-    <select id="tf2">
-        <option value="A">A級</option>
-        <option value="B">B級</option>
-        <option value="C">C級</option>
-    </select>
+    <div class="uk-margin">
+        <div class="uk-margin">
 
-    <br>
-    順位:<input id="tf3" value="" type="textfield">
-    <button onclick="button1Pressed()">登録</button>
-    <br>
-    <p id="result"></p>
+            <label class="uk-form-label">新規部隊名</label>
+            <input class="uk-input uk-form-small uk-form-width-small" id="tf1" value="" type="textfield">
+            <br>
+            <label class="uk-form-label">級位</label>
+            <select class="uk-select uk-form-small uk-form-width-small" id="tf2">
+                <option value="A">A級</option>
+                <option value="B">B級</option>
+                <option value="C">C級</option>
+                <option value="null">所属なし</option>
+            </select>
+
+            <br>
+            <label class="uk-form-label">順位 </label>
+            <input class="uk-input uk-form-small uk-form-width-small" id="tf3" value="" type="textfield">
+            <br>
+            <div class="uk-margin">
+                <button class="uk-button uk-button-primary" onclick="button1Pressed()">登録</button>
+            </div>
+            <br>
+            <p id="result"></p>
+
+        </div>
 </body>
 
 </html>
